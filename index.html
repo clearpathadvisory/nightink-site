@@ -43,7 +43,10 @@ header{padding:72px 0 0;text-align:center;position:relative;overflow:hidden}
 header::before{content:"";position:absolute;left:50%;top:-140px;transform:translateX(-50%);
  width:620px;height:620px;border-radius:50%;
  background:radial-gradient(circle,rgba(236,72,153,.16),transparent 62%);pointer-events:none}
-.mark{width:104px;height:104px;border-radius:24px;position:relative;margin:0 auto 28px;display:block}
+.mark{width:104px;height:104px;border-radius:24px;position:relative;margin:0 auto 28px;display:block;
+ box-shadow:0 0 0 1px rgba(236,72,153,.18),
+            0 14px 44px -14px rgba(236,72,153,.55),
+            0 24px 80px -24px rgba(168,85,247,.55)}
 h1{font-family:var(--display);font-size:clamp(38px,7vw,62px);line-height:1.08;
  font-weight:400;margin:0 0 18px;letter-spacing:-.02em;position:relative}
 h1 em{font-style:italic}
@@ -54,9 +57,25 @@ h1 em{font-style:italic}
 .badge{display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border-radius:999px;
  background:var(--card);border:1px solid var(--rule);text-decoration:none;font-size:14.5px;
  transition:border-color .2s,transform .12s}
-.badge:hover{border-color:#3C414D;transform:translateY(-1px)}
-.badge.primary{background-image:var(--g);border-color:transparent;font-weight:600;
- box-shadow:0 8px 26px -10px rgba(236,72,153,.7)}
+.badge:hover{border-color:rgba(236,72,153,.38);transform:translateY(-1px);
+ box-shadow:0 10px 30px -18px rgba(236,72,153,.8)}
+.badge.primary{background-image:var(--g);border-color:transparent;font-weight:600;position:relative;
+ box-shadow:0 0 0 1px rgba(236,72,153,.35),
+            0 6px 20px -6px rgba(236,72,153,.55),
+            0 12px 46px -12px rgba(168,85,247,.55);
+ animation:breathe 5.5s ease-in-out infinite}
+.badge.primary:hover{transform:translateY(-2px);
+ box-shadow:0 0 0 1px rgba(236,72,153,.55),
+            0 8px 26px -6px rgba(236,72,153,.8),
+            0 18px 60px -14px rgba(168,85,247,.75)}
+/* a slow, shallow pulse — enough to catch the eye, not enough to nag */
+@keyframes breathe{
+  0%,100%{box-shadow:0 0 0 1px rgba(236,72,153,.35),
+                     0 6px 20px -6px rgba(236,72,153,.50),
+                     0 12px 46px -12px rgba(168,85,247,.45)}
+  50%    {box-shadow:0 0 0 1px rgba(236,72,153,.50),
+                     0 6px 24px -6px rgba(236,72,153,.72),
+                     0 16px 58px -12px rgba(168,85,247,.68)}}
 .badge small{display:block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
  opacity:.7;font-weight:400}
 .soon{color:var(--dim);font-size:13px;margin-top:18px;position:relative}
@@ -64,7 +83,10 @@ h1 em{font-style:italic}
 /* ---------- claims ---------- */
 .claims{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;
  margin:56px 0 0}
-.claim{background:var(--lift);border:1px solid var(--rule);border-radius:16px;padding:22px}
+.claim{background:var(--lift);border:1px solid var(--rule);border-radius:16px;padding:22px;
+ transition:border-color .25s,box-shadow .25s,transform .18s}
+.claim:hover{border-color:rgba(236,72,153,.34);transform:translateY(-2px);
+ box-shadow:0 14px 40px -22px rgba(236,72,153,.75)}
 .claim h3{font-family:var(--display);font-size:19px;font-weight:500;margin:0 0 8px}
 .claim p{font-family:var(--body);font-weight:300;font-size:15px;color:var(--faint);margin:0}
 
@@ -84,8 +106,21 @@ section p strong{color:var(--paper);font-weight:400}
 .split > div{background:var(--lift);border:1px solid var(--rule);border-radius:18px;
  padding:26px 22px 24px;text-align:center}
 /* the paid side gets the accent, so the two are told apart at a glance */
-.split > div.paid{border-color:transparent;
- box-shadow:0 0 0 1.5px rgba(236,72,153,.42), 0 14px 34px -22px rgba(236,72,153,.8)}
+.split > div.paid{border-color:transparent;position:relative;
+ box-shadow:0 0 0 1.5px rgba(236,72,153,.62),
+            0 0 0 5px rgba(236,72,153,.10),
+            0 0 46px -2px rgba(236,72,153,.34),
+            0 26px 74px -22px rgba(168,85,247,1);
+ animation:cardGlow 6.5s ease-in-out infinite}
+@keyframes cardGlow{
+  0%,100%{box-shadow:0 0 0 1.5px rgba(236,72,153,.55),
+                     0 0 0 5px rgba(236,72,153,.08),
+                     0 0 38px -4px rgba(236,72,153,.26),
+                     0 22px 64px -24px rgba(168,85,247,.85)}
+  50%    {box-shadow:0 0 0 1.5px rgba(236,72,153,.75),
+                     0 0 0 6px rgba(236,72,153,.14),
+                     0 0 56px 0px rgba(236,72,153,.42),
+                     0 30px 84px -20px rgba(168,85,247,1)}}
 
 /* header is a real heading now: display serif, paper white, twice the size of
    the list beneath it, with a caption and a rule to close the block off */
@@ -104,7 +139,7 @@ footer{padding:32px 0 56px;border-top:1px solid var(--rule);margin-top:44px;
  display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
  font-size:13.5px;color:var(--dim)}
 footer a{color:var(--faint);text-decoration:none;margin-left:20px}
-footer a:hover{color:var(--paper)}
+footer a:hover{color:#F0A8CE;text-shadow:0 0 18px rgba(236,72,153,.5)}
 footer .links{display:flex;gap:0}
 
 @media (max-width:760px){
@@ -118,7 +153,10 @@ footer .links{display:flex;gap:0}
   footer{flex-direction:column;gap:14px}
   footer a{margin:0 20px 0 0}
 }
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important}
+  .badge.primary,.split > div.paid{animation:none!important}
+}
 </style>
 </head>
 <body>
