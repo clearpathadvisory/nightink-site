@@ -164,6 +164,135 @@ footer .links{display:flex;gap:0}
   *{transition:none!important}
   .badge.primary,.split > div.paid{animation:none!important}
 }
+ /* ── Nightink · live screens ───────────────────────────────────────────
+   Replaces the four <img> inside .shots with animated panels.
+
+   Uses YOUR existing tokens (--ink, --card, --rule, --paper, --faint,
+   --dim, --g, --display, --body, --ui) and YOUR existing .shots grid and
+   760px scroll breakpoint. The page layout does not change.
+
+   Paste just before </style> in index.html.
+   ───────────────────────────────────────────────────────────────────── */
+
+/* the panel sits where an <img> sat, styled the same way */
+.shots > .nk{
+  width:100%;
+  aspect-ratio:1179/2556;
+  border-radius:18px;
+  border:1px solid var(--rule);
+  background:var(--ink);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  padding:7% 5.5% 0;
+  container-type:inline-size;   /* type scales off the card, not the viewport */
+  font-size:3.5cqw;             /* one knob for everything inside */
+  line-height:1.5;
+  opacity:0;transform:translateY(18px);
+  transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1);
+}
+.shots > .nk.in{opacity:1;transform:none}
+
+/* ── shared chrome ── */
+.nk-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.1em}
+.nk-dw{font-family:var(--ui);font-size:.86em;font-weight:500;letter-spacing:.2em;color:var(--dim)}
+.nk-dt{font-family:var(--display);font-style:italic;font-weight:300;font-size:2.8em;
+  line-height:1;margin-top:.08em;color:var(--paper)}
+.nk-dt b{font-weight:300;font-style:normal;color:var(--dim);font-size:.4em;margin-left:.3em}
+.nk-ic{color:var(--dim);font-size:1.4em;margin-top:.4em;letter-spacing:.2em}
+.nk-sc{font-family:var(--ui);font-size:.84em;font-weight:500;letter-spacing:.19em;
+  color:var(--dim);text-transform:uppercase;margin:1.2em 0 .7em}
+.nk-tb{margin-top:auto;display:flex;justify-content:space-around;padding:.9em 0 1.4em;
+  color:var(--dim);font-family:var(--ui);font-size:.9em}
+.nk-tb span{display:flex;flex-direction:column;align-items:center;gap:.35em}
+.nk-tb .on{color:var(--paper)}
+.nk-tb i{width:1.6em;height:1.6em;border-radius:.34em;border:1px solid currentColor;display:block}
+
+/* ── 1 · write ── */
+.nk-pl{display:inline-flex;align-self:flex-start;border:1px solid var(--rule);
+  border-radius:999px;padding:.4em .9em;font-family:var(--ui);font-size:.92em;color:var(--faint)}
+.nk-pl b{color:var(--paper);font-weight:500}
+.nk-ak{display:flex;justify-content:space-between;align-items:baseline;margin:1.2em 0 .7em}
+.nk-ak i{font-family:var(--display);font-size:1.45em;font-style:normal;color:var(--paper)}
+.nk-ak s{font-family:var(--ui);font-size:.88em;color:var(--dim);text-decoration:none}
+.nk-md{display:flex;gap:.55em}
+.nk-md i{flex:1;aspect-ratio:1;border-radius:50%;display:block;transform:scale(0);
+  transition:transform .55s cubic-bezier(.3,1.6,.5,1),box-shadow .4s}
+.nk-md i.pop{transform:scale(1)}
+.nk-md i.sel{box-shadow:0 0 0 .12em var(--paper),0 0 1em rgba(236,72,153,.45)}
+.nk-cd{margin-top:1em;border:1px solid var(--rule);border-radius:.9em;background:var(--card);
+  padding:1em .9em;flex:1;position:relative;overflow:hidden}
+.nk-tt{font-family:var(--display);font-size:1.45em;color:var(--paper);min-height:1.3em}
+.nk-bd{font-family:var(--body);font-weight:300;font-size:1.2em;line-height:1.72;
+  color:var(--faint);margin-top:.6em}
+.nk-cr{display:inline-block;width:.06em;height:1em;background:#EC4899;
+  vertical-align:-.14em;animation:nkBlink 1.05s steps(2) infinite}
+@keyframes nkBlink{50%{opacity:0}}
+.nk-wc{position:absolute;right:.9em;bottom:.8em;font-family:var(--ui);font-size:.88em;color:var(--dim)}
+
+/* ── 2 · entries ── */
+.nk-sr{border:1px solid var(--rule);border-radius:.8em;padding:.72em .9em;color:var(--dim);
+  font-family:var(--body);font-weight:300;font-size:1.04em;background:var(--card)}
+.nk-tr{display:flex;flex-wrap:wrap;gap:.42em;margin-top:.8em}
+.nk-tg{border:1px solid var(--rule);border-radius:999px;padding:.34em .72em;
+  font-family:var(--ui);font-size:.9em;color:var(--faint);
+  opacity:0;transform:translateY(.4em);transition:.42s cubic-bezier(.2,.8,.2,1)}
+.nk-tg.in{opacity:1;transform:none}
+.nk-tg.on{background-image:var(--g);color:#fff;border-color:transparent;font-weight:500}
+.nk-en{border-left:1px solid var(--rule);padding-left:.8em;margin-top:.95em;
+  opacity:0;transform:translateX(-.5em);transition:.55s cubic-bezier(.2,.8,.2,1)}
+.nk-en.in{opacity:1;transform:none}
+.nk-en u{display:block;font-family:var(--display);font-style:italic;font-size:1em;
+  color:var(--dim);text-decoration:none}
+.nk-en b{display:block;font-family:var(--display);font-weight:400;font-size:1.3em;
+  color:var(--paper);margin:.12em 0}
+.nk-en p{font-family:var(--body);font-weight:300;font-size:1.08em;color:var(--faint);
+  margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nk-en em{display:inline-flex;align-items:center;gap:.3em;font-style:normal;
+  font-family:var(--ui);font-size:.9em;color:var(--dim);margin:.35em .7em 0 0}
+.nk-en em s{width:.5em;height:.5em;border-radius:50%;display:block;text-decoration:none}
+
+/* ── 3 · year ── */
+.nk-em{text-align:center;margin:2.2em 0 1.5em}
+.nk-em b{font-family:var(--display);font-weight:400;font-size:1.45em;color:var(--paper);
+  display:block;margin-bottom:.45em}
+.nk-em p{font-family:var(--body);font-weight:300;font-size:1em;color:var(--faint);
+  margin:0;line-height:1.55}
+.nk-ht{display:grid;grid-template-columns:repeat(19,1fr);gap:.12em;margin-top:.7em}
+.nk-ht i{aspect-ratio:1;border-radius:.08em;background:#1A1D24;display:block;
+  transition:background .5s ease}
+.nk-ky{display:flex;align-items:center;gap:.28em;margin-top:.8em;
+  font-family:var(--ui);font-size:.86em;color:var(--dim)}
+.nk-ky s{width:.6em;height:.6em;border-radius:.08em;display:block;text-decoration:none}
+.nk-ky span{margin-left:.3em}
+
+/* ── 4 · look ── */
+.nk-sh{display:flex;justify-content:space-between;align-items:flex-start;margin-top:1.2em}
+.nk-sh b{font-family:var(--display);font-weight:400;font-size:1.7em;color:var(--paper)}
+.nk-sh i{color:var(--dim);font-size:1.4em;font-style:normal}
+.nk-bl{font-family:var(--body);font-weight:300;font-size:1em;color:var(--faint);
+  margin:.45em 0 0;line-height:1.55}
+.nk-cvs{display:grid;grid-template-columns:repeat(3,1fr);gap:.5em;margin-top:.7em}
+.nk-cv{border:1px solid var(--rule);border-radius:.55em;padding:.52em .48em .42em;
+  opacity:0;transform:scale(.9);transition:.45s cubic-bezier(.3,1.3,.5,1)}
+.nk-cv.in{opacity:1;transform:none}
+.nk-cv.sel{border-color:rgba(236,72,153,.62);
+  box-shadow:0 0 0 .06em rgba(236,72,153,.5),0 0 1em -.1em rgba(168,85,247,.6)}
+.nk-cv u{display:flex;gap:.22em;margin-bottom:1.4em;text-decoration:none}
+.nk-cv u s{width:.4em;height:.4em;border-radius:50%;display:block;text-decoration:none}
+.nk-cv em{font-family:var(--ui);font-style:normal;font-size:.88em;color:var(--dim)}
+.nk-cv.sel em{color:var(--paper)}
+
+/* mobile: your .shots already scrolls below 760px — the panel just needs
+   the same fixed width the images had */
+@media (max-width:760px){
+  .shots > .nk{width:196px;flex:none}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .shots > .nk,.nk-md i,.nk-tg,.nk-en,.nk-cv{opacity:1;transform:none;transition:none}
+  .nk-cr{animation:none}
+}
 </style>
 </head>
 <body>
@@ -192,10 +321,79 @@ footer .links{display:flex;gap:0}
   </header>
 
   <div class="shots">
-    <img src="/shots/write.png" alt="Writing an entry" loading="lazy">
-    <img src="/shots/entries.png" alt="Browsing past entries" loading="lazy">
-    <img src="/shots/year.png" alt="A year of entries shown as colour" loading="lazy">
-    <img src="/shots/look.png" alt="Choosing covers and papers" loading="lazy">
+    <!-- ── Nightink · live screens ──────────────────────────────────────────
+     Replace the FOUR <img> lines inside <div class="shots"> with this.
+     Keep the surrounding <div class="shots"> ... </div> exactly as it is.
+     ───────────────────────────────────────────────────────────────── -->
+
+    <div class="nk" aria-label="Writing an entry">
+      <div class="nk-hd">
+        <div><div class="nk-dw">MONDAY</div><div class="nk-dt">July 27 <b>⌄</b></div></div>
+        <div class="nk-ic">◎ ⚙</div>
+      </div>
+      <span class="nk-pl"><b id="nkRun">0</b>&nbsp;days running · <b id="nkKept">0</b>&nbsp;entries kept</span>
+      <div class="nk-ak"><i>How are you feeling today?</i><s>tap one</s></div>
+      <div class="nk-md" id="nkMoods">
+        <i style="background:#7E4553"></i><i style="background:#3D4A57"></i>
+        <i style="background:#4A5058"></i><i style="background:#2F5F72"></i>
+        <i style="background:#3FA093"></i>
+      </div>
+      <div class="nk-cd">
+        <div class="nk-tt" id="nkTtl"></div>
+        <div class="nk-bd" id="nkBdy"></div>
+        <span class="nk-wc" id="nkWc">0 words</span>
+      </div>
+      <div class="nk-tb"><span class="on"><i></i>Today</span><span><i></i>Entries</span><span><i></i>Look back</span></div>
+    </div>
+
+    <div class="nk" aria-label="Browsing past entries">
+      <div class="nk-hd">
+        <div><div class="nk-dw">MONDAY</div><div class="nk-dt">July 27 <b>⌄</b></div></div>
+        <div class="nk-ic">◎ ⚙</div>
+      </div>
+      <div class="nk-sr">Search your entries</div>
+      <div class="nk-tr">
+        <span class="nk-tg on">All</span><span class="nk-tg">💼 work</span><span class="nk-tg">👥 people</span>
+        <span class="nk-tg">💪 body</span><span class="nk-tg">🏠 home</span><span class="nk-tg">💰 money</span>
+        <span class="nk-tg">💡 idea</span><span class="nk-tg">✈️ travel</span><span class="nk-tg">❤️ love</span>
+      </div>
+      <div class="nk-sc">All entries</div>
+      <div class="nk-en"><u>July 27, 2026</u><b>The long way home</b>
+        <p>Walked back along the river instead of taking…</p>
+        <em><s style="background:#2F5F72"></s>people</em><em><s style="background:#A855F7"></s>travel</em></div>
+      <div class="nk-en"><u>July 26, 2026</u><b>Slow Tuesday</b>
+        <p>Nothing much happened, which was the best…</p>
+        <em><s style="background:#C08A3A"></s>home</em></div>
+      <div class="nk-en"><u>July 25, 2026</u><b>It went well</b>
+        <p>The presentation I'd been dreading for a…</p>
+        <em><s style="background:#3FA093"></s>work</em></div>
+      <div class="nk-tb"><span><i></i>Today</span><span class="on"><i></i>Entries</span><span><i></i>Look back</span></div>
+    </div>
+
+    <div class="nk" aria-label="A year of entries shown as colour">
+      <div class="nk-hd">
+        <div><div class="nk-dw">MONDAY</div><div class="nk-dt">July 27 <b>⌄</b></div></div>
+        <div class="nk-ic">◎ ⚙</div>
+      </div>
+      <div class="nk-sc">On this day</div>
+      <div class="nk-em"><b>Not yet.</b>
+        <p>Once you have been writing a year, today's page brings back the same date from every year before it.</p></div>
+      <div class="nk-sc">Your year in ink</div>
+      <div class="nk-ht" id="nkHeat"></div>
+      <div class="nk-ky">
+        <s style="background:#3A2440"></s><s style="background:#6B2F58"></s>
+        <s style="background:#A83E70"></s><s style="background:#EC4899"></s><s style="background:#C88BE8"></s>
+        <span>heavy · light · <b id="nkDays">0</b> days</span></div>
+      <div class="nk-tb"><span><i></i>Today</span><span><i></i>Entries</span><span class="on"><i></i>Look back</span></div>
+    </div>
+
+    <div class="nk" aria-label="Choosing covers and papers">
+      <div class="nk-sh"><b>Make it yours</b><i>✕</i></div>
+      <p class="nk-bl">Eleven covers, four ways to mark a mood, nine papers, five hands and six inks to write in.</p>
+      <div class="nk-sc">Cover</div>
+      <div class="nk-cvs" id="nkCovers"></div>
+      <div class="nk-tb"><span><i></i>Today</span><span><i></i>Entries</span><span><i></i>Look back</span></div>
+    </div>
   </div>
 
   <section>
@@ -236,6 +434,6 @@ footer .links{display:flex;gap:0}
     </div>
   </footer>
 </div>
-
+<script src="/nk-screens.js" defer></script>
 </body>
 </html>
