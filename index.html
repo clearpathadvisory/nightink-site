@@ -173,15 +173,20 @@ footer .links{display:flex;gap:0}
   border:1px solid var(--rule);
   background:var(--ink);
   overflow:hidden;
-  display:flex;
-  flex-direction:column;
-  padding:7% 5.5% 0;
-  container-type:inline-size;   /* type scales off the card, not the viewport */
-  font-size:clamp(5px,1.05vw,8.4px);   /* fallback if cqw is unsupported */
-  font-size:3.5cqw;                    /* one knob for everything inside */
-  line-height:1.5;
+  position:relative;
+  container-type:inline-size;   /* the CARD is the container… */
   opacity:0;transform:translateY(18px);
   transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1);
+}
+/* …and this inner layer QUERIES it. An element cannot query itself, which is
+   why the font-size has to live one level down. */
+.shots > .nk > .nk-s{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  padding:7% 5.5% 0;
+  font-size:7px;        /* fallback where container units are unsupported */
+  font-size:3.5cqw;
+  line-height:1.5;
 }
 .shots > .nk.in{opacity:1;transform:none}
 
@@ -278,7 +283,8 @@ footer .links{display:flex;gap:0}
 /* mobile: your .shots already scrolls below 760px — the panel just needs
    the same fixed width the images had */
 @media (max-width:760px){
-  .shots > .nk{width:196px;flex:none;font-size:6.9px;font-size:3.5cqw}
+  .shots > .nk{width:196px;flex:none}
+  .shots > .nk > .nk-s{font-size:6.9px;font-size:3.5cqw}
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -314,72 +320,76 @@ footer .links{display:flex;gap:0}
 
   <div class="shots">
     <div class="nk" aria-label="Writing an entry">
-      <div class="nk-hd">
-        <div><div class="nk-dw">MONDAY</div><div class="nk-dt">July 27 <b>⌄</b></div></div>
-        <div class="nk-ic">◎ ⚙</div>
+      <div class="nk-s">        <div class="nk-hd">
+          <div><div class="nk-dw">MONDAY</div><div class="nk-dt">July 27 <b>⌄</b></div></div>
+          <div class="nk-ic">◎ ⚙</div>
+        </div>
+        <span class="nk-pl"><b id="nkRun">0</b>&nbsp;days running · <b id="nkKept">0</b>&nbsp;entries kept</span>
+        <div class="nk-ak"><i>How are you feeling today?</i><s>tap one</s></div>
+        <div class="nk-md" id="nkMoods">
+          <i style="background:#7E4553"></i><i style="background:#3D4A57"></i>
+          <i style="background:#4A5058"></i><i style="background:#2F5F72"></i>
+          <i style="background:#3FA093"></i>
+        </div>
+        <div class="nk-cd">
+          <div class="nk-tt" id="nkTtl"></div>
+          <div class="nk-bd" id="nkBdy"></div>
+          <span class="nk-wc" id="nkWc">0 words</span>
+        </div>
+        <div class="nk-tb"><span class="on"><i></i>Today</span><span><i></i>Entries</span><span><i></i>Look back</span></div>
       </div>
-      <span class="nk-pl"><b id="nkRun">0</b>&nbsp;days running · <b id="nkKept">0</b>&nbsp;entries kept</span>
-      <div class="nk-ak"><i>How are you feeling today?</i><s>tap one</s></div>
-      <div class="nk-md" id="nkMoods">
-        <i style="background:#7E4553"></i><i style="background:#3D4A57"></i>
-        <i style="background:#4A5058"></i><i style="background:#2F5F72"></i>
-        <i style="background:#3FA093"></i>
-      </div>
-      <div class="nk-cd">
-        <div class="nk-tt" id="nkTtl"></div>
-        <div class="nk-bd" id="nkBdy"></div>
-        <span class="nk-wc" id="nkWc">0 words</span>
-      </div>
-      <div class="nk-tb"><span class="on"><i></i>Today</span><span><i></i>Entries</span><span><i></i>Look back</span></div>
     </div>
 
     <div class="nk" aria-label="Browsing past entries">
-      <div class="nk-hd">
-        <div><div class="nk-dw">MONDAY</div><div class="nk-dt">July 27 <b>⌄</b></div></div>
-        <div class="nk-ic">◎ ⚙</div>
+      <div class="nk-s">        <div class="nk-hd">
+          <div><div class="nk-dw">MONDAY</div><div class="nk-dt">July 27 <b>⌄</b></div></div>
+          <div class="nk-ic">◎ ⚙</div>
+        </div>
+        <div class="nk-sr">Search your entries</div>
+        <div class="nk-tr">
+          <span class="nk-tg on">All</span><span class="nk-tg">💼 work</span><span class="nk-tg">👥 people</span>
+          <span class="nk-tg">💪 body</span><span class="nk-tg">🏠 home</span><span class="nk-tg">💰 money</span>
+          <span class="nk-tg">💡 idea</span><span class="nk-tg">✈️ travel</span><span class="nk-tg">❤️ love</span>
+        </div>
+        <div class="nk-sc">All entries</div>
+        <div class="nk-en"><u>July 27, 2026</u><b>The long way home</b>
+          <p>Walked back along the river instead of taking…</p>
+          <em><s style="background:#2F5F72"></s>people</em><em><s style="background:#A855F7"></s>travel</em></div>
+        <div class="nk-en"><u>July 26, 2026</u><b>Slow Tuesday</b>
+          <p>Nothing much happened, which was the best…</p>
+          <em><s style="background:#C08A3A"></s>home</em></div>
+        <div class="nk-en"><u>July 25, 2026</u><b>It went well</b>
+          <p>The presentation I'd been dreading for a…</p>
+          <em><s style="background:#3FA093"></s>work</em></div>
+        <div class="nk-tb"><span><i></i>Today</span><span class="on"><i></i>Entries</span><span><i></i>Look back</span></div>
       </div>
-      <div class="nk-sr">Search your entries</div>
-      <div class="nk-tr">
-        <span class="nk-tg on">All</span><span class="nk-tg">💼 work</span><span class="nk-tg">👥 people</span>
-        <span class="nk-tg">💪 body</span><span class="nk-tg">🏠 home</span><span class="nk-tg">💰 money</span>
-        <span class="nk-tg">💡 idea</span><span class="nk-tg">✈️ travel</span><span class="nk-tg">❤️ love</span>
-      </div>
-      <div class="nk-sc">All entries</div>
-      <div class="nk-en"><u>July 27, 2026</u><b>The long way home</b>
-        <p>Walked back along the river instead of taking…</p>
-        <em><s style="background:#2F5F72"></s>people</em><em><s style="background:#A855F7"></s>travel</em></div>
-      <div class="nk-en"><u>July 26, 2026</u><b>Slow Tuesday</b>
-        <p>Nothing much happened, which was the best…</p>
-        <em><s style="background:#C08A3A"></s>home</em></div>
-      <div class="nk-en"><u>July 25, 2026</u><b>It went well</b>
-        <p>The presentation I'd been dreading for a…</p>
-        <em><s style="background:#3FA093"></s>work</em></div>
-      <div class="nk-tb"><span><i></i>Today</span><span class="on"><i></i>Entries</span><span><i></i>Look back</span></div>
     </div>
 
     <div class="nk" aria-label="A year of entries shown as colour">
-      <div class="nk-hd">
-        <div><div class="nk-dw">MONDAY</div><div class="nk-dt">July 27 <b>⌄</b></div></div>
-        <div class="nk-ic">◎ ⚙</div>
+      <div class="nk-s">        <div class="nk-hd">
+          <div><div class="nk-dw">MONDAY</div><div class="nk-dt">July 27 <b>⌄</b></div></div>
+          <div class="nk-ic">◎ ⚙</div>
+        </div>
+        <div class="nk-sc">On this day</div>
+        <div class="nk-em"><b>Not yet.</b>
+          <p>Once you have been writing a year, today's page brings back the same date from every year before it.</p></div>
+        <div class="nk-sc">Your year in ink</div>
+        <div class="nk-ht" id="nkHeat"></div>
+        <div class="nk-ky">
+          <s style="background:#3A2440"></s><s style="background:#6B2F58"></s>
+          <s style="background:#A83E70"></s><s style="background:#EC4899"></s><s style="background:#C88BE8"></s>
+          <span>heavy · light · <b id="nkDays">0</b> days</span></div>
+        <div class="nk-tb"><span><i></i>Today</span><span><i></i>Entries</span><span class="on"><i></i>Look back</span></div>
       </div>
-      <div class="nk-sc">On this day</div>
-      <div class="nk-em"><b>Not yet.</b>
-        <p>Once you have been writing a year, today's page brings back the same date from every year before it.</p></div>
-      <div class="nk-sc">Your year in ink</div>
-      <div class="nk-ht" id="nkHeat"></div>
-      <div class="nk-ky">
-        <s style="background:#3A2440"></s><s style="background:#6B2F58"></s>
-        <s style="background:#A83E70"></s><s style="background:#EC4899"></s><s style="background:#C88BE8"></s>
-        <span>heavy · light · <b id="nkDays">0</b> days</span></div>
-      <div class="nk-tb"><span><i></i>Today</span><span><i></i>Entries</span><span class="on"><i></i>Look back</span></div>
     </div>
 
     <div class="nk" aria-label="Choosing covers and papers">
-      <div class="nk-sh"><b>Make it yours</b><i>✕</i></div>
-      <p class="nk-bl">Eleven covers, four ways to mark a mood, nine papers, five hands and six inks to write in.</p>
-      <div class="nk-sc">Cover</div>
-      <div class="nk-cvs" id="nkCovers"></div>
-      <div class="nk-tb"><span><i></i>Today</span><span><i></i>Entries</span><span><i></i>Look back</span></div>
+      <div class="nk-s">        <div class="nk-sh"><b>Make it yours</b><i>✕</i></div>
+        <p class="nk-bl">Eleven covers, four ways to mark a mood, nine papers, five hands and six inks to write in.</p>
+        <div class="nk-sc">Cover</div>
+        <div class="nk-cvs" id="nkCovers"></div>
+        <div class="nk-tb"><span><i></i>Today</span><span><i></i>Entries</span><span><i></i>Look back</span></div>
+      </div>
     </div>
   </div>
 
