@@ -435,18 +435,29 @@ footer .links{display:flex;gap:0}
 <script>
 /* ── Nightink · live screens ─────────────────────────────────────── */
 (function () {
+  var LOOP = false;          /* true = keep cycling without scrolling */
+  var LOOP_GAP = 5000;       /* pause before a loop restarts, ms */
+
   var REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
   var $ = function (id) { return document.getElementById(id); };
   var panels = document.querySelectorAll(".shots > .nk");
   if (!panels.length) return;
 
-  /* ── the year grid is built here rather than shipped as 266 empty tags ── */
+  /* every timer is owned by a panel, so a replay can cancel cleanly */
+  var jobs = [[], [], [], []];
+  function T(i, fn, ms) { var t = setTimeout(fn, ms); jobs[i].push(t); return t; }
+  function IV(i, fn, ms) { var t = setInterval(fn, ms); jobs[i].push(t); return t; }
+  function stop(i) {
+    jobs[i].forEach(function (t) { clearTimeout(t); clearInterval(t); });
+    jobs[i] = [];
+  }
+
+  /* the year grid is built once, then repainted on each run */
   var HEAT = ["#1A1D24", "#3A2440", "#6B2F58", "#A83E70", "#EC4899", "#C88BE8"];
   var heat = $("nkHeat"), cells = [];
   if (heat) {
     for (var i = 0; i < 266; i++) {
       var c = document.createElement("i"), v = Math.random();
-      /* recent weeks denser, so it reads as a habit forming rather than noise */
       var lv = i > 228 ? (v > .5 ? 4 : v > .25 ? 3 : 2)
                        : v > .88 ? 5 : v > .74 ? 4 : v > .56 ? 3 : v > .34 ? 2 : v > .16 ? 1 : 0;
       c.dataset.c = HEAT[lv];
@@ -455,7 +466,6 @@ footer .links{display:flex;gap:0}
     }
   }
 
-  /* ── covers ── */
   var COVERS = [
     ["Ink", ["#2A3038", "#4A5058", "#9FC4DC"]], ["Paper", ["#E8E2D6", "#C9C2B4", "#8A8378"]],
     ["Sepia", ["#3A2E24", "#8A6A44", "#D8B98A"]], ["Moss", ["#243028", "#3F6B50", "#8FBFA0"]],
@@ -472,17 +482,39 @@ footer .links{display:flex;gap:0}
     cwrap.appendChild(d);
   });
 
+  /* put a panel back to its starting state */
+  function reset(i) {
+    stop(i);
+    if (i === 0) {
+      if ($("nkTtl")) $("nkTtl").textContent = "";
+      if ($("nkBdy")) $("nkBdy").innerHTML = "";
+      if ($("nkWc")) $("nkWc").textContent = "0 words";
+      if ($("nkRun")) $("nkRun").textContent = "0";
+      if ($("nkKept")) $("nkKept").textContent = "0";
+      document.querySelectorAll("#nkMoods i").forEach(function (d) {
+        d.classList.remove("pop", "sel"); });
+    }
+    if (i === 1) document.querySelectorAll(".nk-tg,.nk-en").forEach(function (t) {
+      t.classList.remove("in"); });
+    if (i === 2) {
+      cells.forEach(function (c) { c.style.background = ""; });
+      if ($("nkDays")) $("nkDays").textContent = "0";
+    }
+    if (i === 3 && cwrap) cwrap.querySelectorAll(".nk-cv").forEach(function (c) {
+      c.classList.remove("in", "sel"); });
+  }
+
   /* ── typing that behaves like a hand ─────────────────────────────────
-     Real typing is not a metronome: letters inside a familiar word come
-     fast, the hand breathes at punctuation, stalls before a word that
-     needed choosing, and now and then gets one wrong and goes back. */
+     Letters inside a familiar word come fast, the hand breathes at
+     punctuation, stalls before a word that needed choosing, and now and
+     then gets one wrong and goes back for it. */
   var TITLE = "The long way home";
   var BODY = "Walked back along the river instead of taking the bus. Worth the extra twenty minutes just for the light on the water.";
-  var THINK = { 22: 520, 46: 380, 74: 640, 96: 300 };   /* index → extra pause */
+  var THINK = { 22: 520, 46: 380, 74: 640, 96: 300 };
 
-  function human(el, str, base, opts, done) {
+  function human(panel, el, str, base, opts, done) {
     opts = opts || {};
-    var i = 0, txt = "", fixing = null;
+    var i = 0, txt = "", fixing = null, typoDone = false;
     function delay(ch, prev) {
       var d = base * (0.55 + Math.random() * 0.95);
       if (/[.,]/.test(prev)) d += base * 4.5;
@@ -492,30 +524,32 @@ footer .links{display:flex;gap:0}
       return d;
     }
     (function step() {
-      if (fixing !== null) {                        /* backspacing over the typo */
+      if (fixing !== null) {
         txt = txt.slice(0, -1); el.textContent = txt; fixing--;
-        setTimeout(step, fixing < 0 ? base * 2.6 : base * 1.1);
+        T(panel, step, fixing < 0 ? base * 2.6 : base * 1.1);
         if (fixing < 0) fixing = null;
         return;
       }
-      if (opts.typo && i === opts.typo.i && !opts.typo.done) {
-        txt += opts.typo.wrong; el.textContent = txt; opts.typo.done = true;
-        setTimeout(function () { fixing = opts.typo.wrong.length - 1; step(); }, base * 7);
+      if (opts.typo && i === opts.typo.i && !typoDone) {
+        txt += opts.typo.wrong; el.textContent = txt; typoDone = true;
+        T(panel, function () { fixing = opts.typo.wrong.length - 1; step(); }, base * 7);
         return;
       }
       var ch = str[i], prev = str[i - 1] || "";
       txt += ch; el.textContent = txt; i++;
-      if (i >= str.length) { if (done) setTimeout(done, 420); return; }
+      if (i >= str.length) { if (done) T(panel, done, 420); return; }
       var d = delay(str[i], ch);
       if (opts.think && opts.think[i]) d += opts.think[i];
-      setTimeout(step, d);
+      T(panel, step, d);
     })();
   }
 
-  function count(id, to, ms) {
+  function count(panel, id, to, ms) {
     var el = $(id); if (!el) return;
-    var s = performance.now();
+    var s = performance.now(), alive = true;
+    jobs[panel].push(setTimeout(function () { alive = false; }, ms + 200));
     (function f(n) {
+      if (!alive) return;
       var p = Math.min((n - s) / ms, 1);
       el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3)));
       if (p < 1) requestAnimationFrame(f);
@@ -525,19 +559,20 @@ footer .links{display:flex;gap:0}
   /* ── the four sequences ── */
   function w1() {
     var m = document.querySelectorAll("#nkMoods i");
-    m.forEach(function (d, n) { setTimeout(function () { d.classList.add("pop"); }, n * 80); });
-    setTimeout(function () { if (m[4]) m[4].classList.add("sel"); }, 700);
-    count("nkRun", 7, 900); count("nkKept", 16, 1100);
+    m.forEach(function (d, n) { T(0, function () { d.classList.add("pop"); }, n * 80); });
+    T(0, function () { if (m[4]) m[4].classList.add("sel"); }, 700);
+    count(0, "nkRun", 7, 900); count(0, "nkKept", 16, 1100);
     var bdy = $("nkBdy"), wc = $("nkWc"), ttl = $("nkTtl");
     if (!bdy || !ttl) return;
-    setTimeout(function () {
-      human(ttl, TITLE, 62, {}, function () {
+    T(0, function () {
+      human(0, ttl, TITLE, 62, {}, function () {
         bdy.innerHTML = '<span></span><span class="nk-cr"></span>';
         var sp = bdy.firstChild;
-        human(sp, BODY, 46, { think: THINK, typo: { i: 88, wrong: "bua" } }, function () {
-          var c = bdy.querySelector(".nk-cr"); if (c) c.remove();
+        human(0, sp, BODY, 46, { think: THINK, typo: { i: 88, wrong: "bua" } }, function () {
+          var cr = bdy.querySelector(".nk-cr"); if (cr) cr.remove();
+          if (LOOP) T(0, function () { reset(0); w1(); }, LOOP_GAP);
         });
-        var iv = setInterval(function () {
+        var iv = IV(0, function () {
           var n = sp.textContent.trim().split(/\s+/).filter(Boolean).length;
           wc.textContent = n + " word" + (n === 1 ? "" : "s");
           if (n >= 22) clearInterval(iv);
@@ -548,40 +583,40 @@ footer .links{display:flex;gap:0}
 
   function w2() {
     document.querySelectorAll(".nk-tg").forEach(function (t, n) {
-      setTimeout(function () { t.classList.add("in"); }, n * 62); });
+      T(1, function () { t.classList.add("in"); }, n * 62); });
     document.querySelectorAll(".nk-en").forEach(function (t, n) {
-      setTimeout(function () { t.classList.add("in"); }, 640 + n * 150); });
+      T(1, function () { t.classList.add("in"); }, 640 + n * 150); });
+    if (LOOP) T(1, function () { reset(1); w2(); }, 1200 + LOOP_GAP);
   }
 
-  function seed(instant) {
+  function w3(instant) {
     var written = 0, days = $("nkDays");
     cells.forEach(function (c, n) {
       var go = function () {
         c.style.background = c.dataset.c;
         if (+c.dataset.w && days) { written++; days.textContent = written; }
       };
-      instant ? go() : setTimeout(go, n * 7);
+      instant ? go() : T(2, go, 300 + n * 7);
     });
+    if (LOOP && !instant) T(2, function () { reset(2); w3(); }, 300 + cells.length * 7 + LOOP_GAP);
   }
-  function w3() { setTimeout(function () { seed(false); }, 300); }
 
   function w4() {
     if (!cwrap) return;
     var cv = cwrap.querySelectorAll(".nk-cv");
-    cv.forEach(function (c, n) { setTimeout(function () { c.classList.add("in"); }, n * 55); });
+    cv.forEach(function (c, n) { T(3, function () { c.classList.add("in"); }, n * 55); });
     var order = [4, 10, 1, 4], k = 0;
-    setTimeout(function () {
+    T(3, function () {
       cv[0].classList.add("sel");
-      setInterval(function () {
+      IV(3, function () {
         cv.forEach(function (c) { c.classList.remove("sel"); });
         cv[order[k % order.length]].classList.add("sel"); k++;
       }, 1900);
     }, 900);
   }
 
-  var SEQ = [w1, w2, w3, w4];
+  var SEQ = [w1, w2, function () { w3(false); }, w4];
 
-  /* reduced motion, or no observer: show the finished state, move nothing */
   function finish(i) {
     if (i === 0) {
       if ($("nkTtl")) $("nkTtl").textContent = TITLE;
@@ -592,7 +627,7 @@ footer .links{display:flex;gap:0}
       if ($("nkKept")) $("nkKept").textContent = "16";
     }
     if (i === 1) document.querySelectorAll(".nk-tg,.nk-en").forEach(function (t) { t.classList.add("in"); });
-    if (i === 2) seed(true);
+    if (i === 2) w3(true);
     if (i === 3 && cwrap) cwrap.querySelectorAll(".nk-cv").forEach(function (c) { c.classList.add("in"); });
   }
 
@@ -601,20 +636,25 @@ footer .links{display:flex;gap:0}
     return;
   }
 
-  /* ── each panel starts when it is genuinely on screen ──
-     Below 760px .shots scrolls sideways, so the panel can be in the page
-     but off to the right. Watching the viewport covers both cases. */
-  var started = [];
+  /* ── replay on every entry, in either direction ──
+     Leaving the viewport resets the panel, so coming back is a fresh run
+     rather than a jump to the finished state. */
+  var running = [];
   var io = new IntersectionObserver(function (es) {
     es.forEach(function (e) {
-      if (!e.isIntersecting) return;
       var i = [].indexOf.call(panels, e.target);
-      if (started[i]) return;
-      started[i] = true;
-      setTimeout(function () { e.target.classList.add("in"); SEQ[i](); }, i * 120);
-      io.unobserve(e.target);
+      if (e.isIntersecting) {
+        if (running[i]) return;
+        running[i] = true;
+        reset(i);
+        T(i, function () { e.target.classList.add("in"); SEQ[i](); }, i * 120);
+      } else if (running[i]) {
+        running[i] = false;
+        e.target.classList.remove("in");
+        reset(i);
+      }
     });
-  }, { threshold: 0.4 });
+  }, { threshold: 0.35 });
   panels.forEach(function (p) { io.observe(p); });
 })();
 </script>
