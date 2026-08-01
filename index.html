@@ -164,6 +164,127 @@ footer .links{display:flex;gap:0}
   *{transition:none!important}
   .badge.primary,.split > div.paid{animation:none!important}
 }
+/* ── Nightink · live screens ─────────────────────────────────────── */
+/* the panel sits where an <img> sat, styled the same way */
+.shots > .nk{
+  width:100%;
+  aspect-ratio:1179/2556;
+  border-radius:18px;
+  border:1px solid var(--rule);
+  background:var(--ink);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  padding:7% 5.5% 0;
+  container-type:inline-size;   /* type scales off the card, not the viewport */
+  font-size:clamp(5px,1.05vw,8.4px);   /* fallback if cqw is unsupported */
+  font-size:3.5cqw;                    /* one knob for everything inside */
+  line-height:1.5;
+  opacity:0;transform:translateY(18px);
+  transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1);
+}
+.shots > .nk.in{opacity:1;transform:none}
+
+/* ── shared chrome ── */
+.nk-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.1em}
+.nk-dw{font-family:var(--ui);font-size:.86em;font-weight:500;letter-spacing:.2em;color:var(--dim)}
+.nk-dt{font-family:var(--display);font-style:italic;font-weight:300;font-size:2.8em;
+  line-height:1;margin-top:.08em;color:var(--paper)}
+.nk-dt b{font-weight:300;font-style:normal;color:var(--dim);font-size:.4em;margin-left:.3em}
+.nk-ic{color:var(--dim);font-size:1.4em;margin-top:.4em;letter-spacing:.2em}
+.nk-sc{font-family:var(--ui);font-size:.84em;font-weight:500;letter-spacing:.19em;
+  color:var(--dim);text-transform:uppercase;margin:1.2em 0 .7em}
+.nk-tb{margin-top:auto;display:flex;justify-content:space-around;padding:.9em 0 1.4em;
+  color:var(--dim);font-family:var(--ui);font-size:.9em}
+.nk-tb span{display:flex;flex-direction:column;align-items:center;gap:.35em}
+.nk-tb .on{color:var(--paper)}
+.nk-tb i{width:1.6em;height:1.6em;border-radius:.34em;border:1px solid currentColor;display:block}
+
+/* ── 1 · write ── */
+.nk-pl{display:inline-flex;align-self:flex-start;border:1px solid var(--rule);
+  border-radius:999px;padding:.4em .9em;font-family:var(--ui);font-size:.92em;color:var(--faint)}
+.nk-pl b{color:var(--paper);font-weight:500}
+.nk-ak{display:flex;justify-content:space-between;align-items:baseline;margin:1.2em 0 .7em}
+.nk-ak i{font-family:var(--display);font-size:1.45em;font-style:normal;color:var(--paper)}
+.nk-ak s{font-family:var(--ui);font-size:.88em;color:var(--dim);text-decoration:none}
+.nk-md{display:flex;gap:.55em}
+.nk-md i{flex:1;aspect-ratio:1;border-radius:50%;display:block;transform:scale(0);
+  transition:transform .55s cubic-bezier(.3,1.6,.5,1),box-shadow .4s}
+.nk-md i.pop{transform:scale(1)}
+.nk-md i.sel{box-shadow:0 0 0 .12em var(--paper),0 0 1em rgba(236,72,153,.45)}
+.nk-cd{margin-top:1em;border:1px solid var(--rule);border-radius:.9em;background:var(--card);
+  padding:1em .9em;flex:1;position:relative;overflow:hidden}
+.nk-tt{font-family:var(--display);font-size:1.45em;color:var(--paper);min-height:1.3em}
+.nk-bd{font-family:var(--body);font-weight:300;font-size:1.2em;line-height:1.72;
+  color:var(--faint);margin-top:.6em}
+.nk-cr{display:inline-block;width:.06em;height:1em;background:#EC4899;
+  vertical-align:-.14em;animation:nkBlink 1.05s steps(2) infinite}
+@keyframes nkBlink{50%{opacity:0}}
+.nk-wc{position:absolute;right:.9em;bottom:.8em;font-family:var(--ui);font-size:.88em;color:var(--dim)}
+
+/* ── 2 · entries ── */
+.nk-sr{border:1px solid var(--rule);border-radius:.8em;padding:.72em .9em;color:var(--dim);
+  font-family:var(--body);font-weight:300;font-size:1.04em;background:var(--card)}
+.nk-tr{display:flex;flex-wrap:wrap;gap:.42em;margin-top:.8em}
+.nk-tg{border:1px solid var(--rule);border-radius:999px;padding:.34em .72em;
+  font-family:var(--ui);font-size:.9em;color:var(--faint);
+  opacity:0;transform:translateY(.4em);transition:.42s cubic-bezier(.2,.8,.2,1)}
+.nk-tg.in{opacity:1;transform:none}
+.nk-tg.on{background-image:var(--g);color:#fff;border-color:transparent;font-weight:500}
+.nk-en{border-left:1px solid var(--rule);padding-left:.8em;margin-top:.95em;
+  opacity:0;transform:translateX(-.5em);transition:.55s cubic-bezier(.2,.8,.2,1)}
+.nk-en.in{opacity:1;transform:none}
+.nk-en u{display:block;font-family:var(--display);font-style:italic;font-size:1em;
+  color:var(--dim);text-decoration:none}
+.nk-en b{display:block;font-family:var(--display);font-weight:400;font-size:1.3em;
+  color:var(--paper);margin:.12em 0}
+.nk-en p{font-family:var(--body);font-weight:300;font-size:1.08em;color:var(--faint);
+  margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nk-en em{display:inline-flex;align-items:center;gap:.3em;font-style:normal;
+  font-family:var(--ui);font-size:.9em;color:var(--dim);margin:.35em .7em 0 0}
+.nk-en em s{width:.5em;height:.5em;border-radius:50%;display:block;text-decoration:none}
+
+/* ── 3 · year ── */
+.nk-em{text-align:center;margin:2.2em 0 1.5em}
+.nk-em b{font-family:var(--display);font-weight:400;font-size:1.45em;color:var(--paper);
+  display:block;margin-bottom:.45em}
+.nk-em p{font-family:var(--body);font-weight:300;font-size:1em;color:var(--faint);
+  margin:0;line-height:1.55}
+.nk-ht{display:grid;grid-template-columns:repeat(19,1fr);gap:.12em;margin-top:.7em}
+.nk-ht i{aspect-ratio:1;border-radius:.08em;background:#1A1D24;display:block;
+  transition:background .5s ease}
+.nk-ky{display:flex;align-items:center;gap:.28em;margin-top:.8em;
+  font-family:var(--ui);font-size:.86em;color:var(--dim)}
+.nk-ky s{width:.6em;height:.6em;border-radius:.08em;display:block;text-decoration:none}
+.nk-ky span{margin-left:.3em}
+
+/* ── 4 · look ── */
+.nk-sh{display:flex;justify-content:space-between;align-items:flex-start;margin-top:1.2em}
+.nk-sh b{font-family:var(--display);font-weight:400;font-size:1.7em;color:var(--paper)}
+.nk-sh i{color:var(--dim);font-size:1.4em;font-style:normal}
+.nk-bl{font-family:var(--body);font-weight:300;font-size:1em;color:var(--faint);
+  margin:.45em 0 0;line-height:1.55}
+.nk-cvs{display:grid;grid-template-columns:repeat(3,1fr);gap:.5em;margin-top:.7em}
+.nk-cv{border:1px solid var(--rule);border-radius:.55em;padding:.52em .48em .42em;
+  opacity:0;transform:scale(.9);transition:.45s cubic-bezier(.3,1.3,.5,1)}
+.nk-cv.in{opacity:1;transform:none}
+.nk-cv.sel{border-color:rgba(236,72,153,.62);
+  box-shadow:0 0 0 .06em rgba(236,72,153,.5),0 0 1em -.1em rgba(168,85,247,.6)}
+.nk-cv u{display:flex;gap:.22em;margin-bottom:1.4em;text-decoration:none}
+.nk-cv u s{width:.4em;height:.4em;border-radius:50%;display:block;text-decoration:none}
+.nk-cv em{font-family:var(--ui);font-style:normal;font-size:.88em;color:var(--dim)}
+.nk-cv.sel em{color:var(--paper)}
+
+/* mobile: your .shots already scrolls below 760px — the panel just needs
+   the same fixed width the images had */
+@media (max-width:760px){
+  .shots > .nk{width:196px;flex:none;font-size:6.9px;font-size:3.5cqw}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .shots > .nk,.nk-md i,.nk-tg,.nk-en,.nk-cv{opacity:1;transform:none;transition:none}
+  .nk-cr{animation:none}
+}
 </style>
 </head>
 <body>
@@ -192,10 +313,74 @@ footer .links{display:flex;gap:0}
   </header>
 
   <div class="shots">
-    <img src="/shots/write.png" alt="Writing an entry" loading="lazy">
-    <img src="/shots/entries.png" alt="Browsing past entries" loading="lazy">
-    <img src="/shots/year.png" alt="A year of entries shown as colour" loading="lazy">
-    <img src="/shots/look.png" alt="Choosing covers and papers" loading="lazy">
+    <div class="nk" aria-label="Writing an entry">
+      <div class="nk-hd">
+        <div><div class="nk-dw">MONDAY</div><div class="nk-dt">July 27 <b>⌄</b></div></div>
+        <div class="nk-ic">◎ ⚙</div>
+      </div>
+      <span class="nk-pl"><b id="nkRun">0</b>&nbsp;days running · <b id="nkKept">0</b>&nbsp;entries kept</span>
+      <div class="nk-ak"><i>How are you feeling today?</i><s>tap one</s></div>
+      <div class="nk-md" id="nkMoods">
+        <i style="background:#7E4553"></i><i style="background:#3D4A57"></i>
+        <i style="background:#4A5058"></i><i style="background:#2F5F72"></i>
+        <i style="background:#3FA093"></i>
+      </div>
+      <div class="nk-cd">
+        <div class="nk-tt" id="nkTtl"></div>
+        <div class="nk-bd" id="nkBdy"></div>
+        <span class="nk-wc" id="nkWc">0 words</span>
+      </div>
+      <div class="nk-tb"><span class="on"><i></i>Today</span><span><i></i>Entries</span><span><i></i>Look back</span></div>
+    </div>
+
+    <div class="nk" aria-label="Browsing past entries">
+      <div class="nk-hd">
+        <div><div class="nk-dw">MONDAY</div><div class="nk-dt">July 27 <b>⌄</b></div></div>
+        <div class="nk-ic">◎ ⚙</div>
+      </div>
+      <div class="nk-sr">Search your entries</div>
+      <div class="nk-tr">
+        <span class="nk-tg on">All</span><span class="nk-tg">💼 work</span><span class="nk-tg">👥 people</span>
+        <span class="nk-tg">💪 body</span><span class="nk-tg">🏠 home</span><span class="nk-tg">💰 money</span>
+        <span class="nk-tg">💡 idea</span><span class="nk-tg">✈️ travel</span><span class="nk-tg">❤️ love</span>
+      </div>
+      <div class="nk-sc">All entries</div>
+      <div class="nk-en"><u>July 27, 2026</u><b>The long way home</b>
+        <p>Walked back along the river instead of taking…</p>
+        <em><s style="background:#2F5F72"></s>people</em><em><s style="background:#A855F7"></s>travel</em></div>
+      <div class="nk-en"><u>July 26, 2026</u><b>Slow Tuesday</b>
+        <p>Nothing much happened, which was the best…</p>
+        <em><s style="background:#C08A3A"></s>home</em></div>
+      <div class="nk-en"><u>July 25, 2026</u><b>It went well</b>
+        <p>The presentation I'd been dreading for a…</p>
+        <em><s style="background:#3FA093"></s>work</em></div>
+      <div class="nk-tb"><span><i></i>Today</span><span class="on"><i></i>Entries</span><span><i></i>Look back</span></div>
+    </div>
+
+    <div class="nk" aria-label="A year of entries shown as colour">
+      <div class="nk-hd">
+        <div><div class="nk-dw">MONDAY</div><div class="nk-dt">July 27 <b>⌄</b></div></div>
+        <div class="nk-ic">◎ ⚙</div>
+      </div>
+      <div class="nk-sc">On this day</div>
+      <div class="nk-em"><b>Not yet.</b>
+        <p>Once you have been writing a year, today's page brings back the same date from every year before it.</p></div>
+      <div class="nk-sc">Your year in ink</div>
+      <div class="nk-ht" id="nkHeat"></div>
+      <div class="nk-ky">
+        <s style="background:#3A2440"></s><s style="background:#6B2F58"></s>
+        <s style="background:#A83E70"></s><s style="background:#EC4899"></s><s style="background:#C88BE8"></s>
+        <span>heavy · light · <b id="nkDays">0</b> days</span></div>
+      <div class="nk-tb"><span><i></i>Today</span><span><i></i>Entries</span><span class="on"><i></i>Look back</span></div>
+    </div>
+
+    <div class="nk" aria-label="Choosing covers and papers">
+      <div class="nk-sh"><b>Make it yours</b><i>✕</i></div>
+      <p class="nk-bl">Eleven covers, four ways to mark a mood, nine papers, five hands and six inks to write in.</p>
+      <div class="nk-sc">Cover</div>
+      <div class="nk-cvs" id="nkCovers"></div>
+      <div class="nk-tb"><span><i></i>Today</span><span><i></i>Entries</span><span><i></i>Look back</span></div>
+    </div>
   </div>
 
   <section>
@@ -237,5 +422,191 @@ footer .links{display:flex;gap:0}
   </footer>
 </div>
 
+<script>
+/* ── Nightink · live screens ─────────────────────────────────────── */
+(function () {
+  var REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var $ = function (id) { return document.getElementById(id); };
+  var panels = document.querySelectorAll(".shots > .nk");
+  if (!panels.length) return;
+
+  /* ── the year grid is built here rather than shipped as 266 empty tags ── */
+  var HEAT = ["#1A1D24", "#3A2440", "#6B2F58", "#A83E70", "#EC4899", "#C88BE8"];
+  var heat = $("nkHeat"), cells = [];
+  if (heat) {
+    for (var i = 0; i < 266; i++) {
+      var c = document.createElement("i"), v = Math.random();
+      /* recent weeks denser, so it reads as a habit forming rather than noise */
+      var lv = i > 228 ? (v > .5 ? 4 : v > .25 ? 3 : 2)
+                       : v > .88 ? 5 : v > .74 ? 4 : v > .56 ? 3 : v > .34 ? 2 : v > .16 ? 1 : 0;
+      c.dataset.c = HEAT[lv];
+      c.dataset.w = lv > 0 ? 1 : 0;
+      cells.push(c); heat.appendChild(c);
+    }
+  }
+
+  /* ── covers ── */
+  var COVERS = [
+    ["Ink", ["#2A3038", "#4A5058", "#9FC4DC"]], ["Paper", ["#E8E2D6", "#C9C2B4", "#8A8378"]],
+    ["Sepia", ["#3A2E24", "#8A6A44", "#D8B98A"]], ["Moss", ["#243028", "#3F6B50", "#8FBFA0"]],
+    ["Plum", ["#2E2434", "#6A4A7E", "#B99FD0"]], ["Rose", ["#F2E4E6", "#D9AEB6", "#A9707E"]],
+    ["Sky", ["#E4EEF4", "#AECDDE", "#6E9DB8"]], ["Peach", ["#F6E8DC", "#E8C4A0", "#C89468"]],
+    ["Carbon", ["#16181C", "#2E3238", "#6E747C"]], ["Midnight", ["#141A28", "#2A3A5A", "#6A84B8"]],
+    ["Clay", ["#2C231F", "#7A5344", "#C09078"]]
+  ];
+  var cwrap = $("nkCovers");
+  if (cwrap) COVERS.forEach(function (c) {
+    var d = document.createElement("div"); d.className = "nk-cv";
+    d.innerHTML = '<u>' + c[1].map(function (x) {
+      return '<s style="background:' + x + '"></s>'; }).join("") + '</u><em>' + c[0] + '</em>';
+    cwrap.appendChild(d);
+  });
+
+  /* ── typing that behaves like a hand ─────────────────────────────────
+     Real typing is not a metronome: letters inside a familiar word come
+     fast, the hand breathes at punctuation, stalls before a word that
+     needed choosing, and now and then gets one wrong and goes back. */
+  var TITLE = "The long way home";
+  var BODY = "Walked back along the river instead of taking the bus. Worth the extra twenty minutes just for the light on the water.";
+  var THINK = { 22: 520, 46: 380, 74: 640, 96: 300 };   /* index → extra pause */
+
+  function human(el, str, base, opts, done) {
+    opts = opts || {};
+    var i = 0, txt = "", fixing = null;
+    function delay(ch, prev) {
+      var d = base * (0.55 + Math.random() * 0.95);
+      if (/[.,]/.test(prev)) d += base * 4.5;
+      if (prev === " " && /[A-Z]/.test(ch)) d += base * 1.4;
+      if (ch === " ") d += base * 0.5;
+      if (Math.random() < 0.06) d += base * 3;
+      return d;
+    }
+    (function step() {
+      if (fixing !== null) {                        /* backspacing over the typo */
+        txt = txt.slice(0, -1); el.textContent = txt; fixing--;
+        setTimeout(step, fixing < 0 ? base * 2.6 : base * 1.1);
+        if (fixing < 0) fixing = null;
+        return;
+      }
+      if (opts.typo && i === opts.typo.i && !opts.typo.done) {
+        txt += opts.typo.wrong; el.textContent = txt; opts.typo.done = true;
+        setTimeout(function () { fixing = opts.typo.wrong.length - 1; step(); }, base * 7);
+        return;
+      }
+      var ch = str[i], prev = str[i - 1] || "";
+      txt += ch; el.textContent = txt; i++;
+      if (i >= str.length) { if (done) setTimeout(done, 420); return; }
+      var d = delay(str[i], ch);
+      if (opts.think && opts.think[i]) d += opts.think[i];
+      setTimeout(step, d);
+    })();
+  }
+
+  function count(id, to, ms) {
+    var el = $(id); if (!el) return;
+    var s = performance.now();
+    (function f(n) {
+      var p = Math.min((n - s) / ms, 1);
+      el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(f);
+    })(s);
+  }
+
+  /* ── the four sequences ── */
+  function w1() {
+    var m = document.querySelectorAll("#nkMoods i");
+    m.forEach(function (d, n) { setTimeout(function () { d.classList.add("pop"); }, n * 80); });
+    setTimeout(function () { if (m[4]) m[4].classList.add("sel"); }, 700);
+    count("nkRun", 7, 900); count("nkKept", 16, 1100);
+    var bdy = $("nkBdy"), wc = $("nkWc"), ttl = $("nkTtl");
+    if (!bdy || !ttl) return;
+    setTimeout(function () {
+      human(ttl, TITLE, 62, {}, function () {
+        bdy.innerHTML = '<span></span><span class="nk-cr"></span>';
+        var sp = bdy.firstChild;
+        human(sp, BODY, 46, { think: THINK, typo: { i: 88, wrong: "bua" } }, function () {
+          var c = bdy.querySelector(".nk-cr"); if (c) c.remove();
+        });
+        var iv = setInterval(function () {
+          var n = sp.textContent.trim().split(/\s+/).filter(Boolean).length;
+          wc.textContent = n + " word" + (n === 1 ? "" : "s");
+          if (n >= 22) clearInterval(iv);
+        }, 110);
+      });
+    }, 760);
+  }
+
+  function w2() {
+    document.querySelectorAll(".nk-tg").forEach(function (t, n) {
+      setTimeout(function () { t.classList.add("in"); }, n * 62); });
+    document.querySelectorAll(".nk-en").forEach(function (t, n) {
+      setTimeout(function () { t.classList.add("in"); }, 640 + n * 150); });
+  }
+
+  function seed(instant) {
+    var written = 0, days = $("nkDays");
+    cells.forEach(function (c, n) {
+      var go = function () {
+        c.style.background = c.dataset.c;
+        if (+c.dataset.w && days) { written++; days.textContent = written; }
+      };
+      instant ? go() : setTimeout(go, n * 7);
+    });
+  }
+  function w3() { setTimeout(function () { seed(false); }, 300); }
+
+  function w4() {
+    if (!cwrap) return;
+    var cv = cwrap.querySelectorAll(".nk-cv");
+    cv.forEach(function (c, n) { setTimeout(function () { c.classList.add("in"); }, n * 55); });
+    var order = [4, 10, 1, 4], k = 0;
+    setTimeout(function () {
+      cv[0].classList.add("sel");
+      setInterval(function () {
+        cv.forEach(function (c) { c.classList.remove("sel"); });
+        cv[order[k % order.length]].classList.add("sel"); k++;
+      }, 1900);
+    }, 900);
+  }
+
+  var SEQ = [w1, w2, w3, w4];
+
+  /* reduced motion, or no observer: show the finished state, move nothing */
+  function finish(i) {
+    if (i === 0) {
+      if ($("nkTtl")) $("nkTtl").textContent = TITLE;
+      if ($("nkBdy")) $("nkBdy").textContent = BODY;
+      document.querySelectorAll("#nkMoods i").forEach(function (d) { d.classList.add("pop"); });
+      if ($("nkWc")) $("nkWc").textContent = "22 words";
+      if ($("nkRun")) $("nkRun").textContent = "7";
+      if ($("nkKept")) $("nkKept").textContent = "16";
+    }
+    if (i === 1) document.querySelectorAll(".nk-tg,.nk-en").forEach(function (t) { t.classList.add("in"); });
+    if (i === 2) seed(true);
+    if (i === 3 && cwrap) cwrap.querySelectorAll(".nk-cv").forEach(function (c) { c.classList.add("in"); });
+  }
+
+  if (REDUCE || !("IntersectionObserver" in window)) {
+    panels.forEach(function (p, i) { p.classList.add("in"); finish(i); });
+    return;
+  }
+
+  /* ── each panel starts when it is genuinely on screen ──
+     Below 760px .shots scrolls sideways, so the panel can be in the page
+     but off to the right. Watching the viewport covers both cases. */
+  var started = [];
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      var i = [].indexOf.call(panels, e.target);
+      if (started[i]) return;
+      started[i] = true;
+      setTimeout(function () { e.target.classList.add("in"); SEQ[i](); }, i * 120);
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.4 });
+  panels.forEach(function (p) { io.observe(p); });
+})();
+</script>
 </body>
 </html>
